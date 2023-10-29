@@ -13,6 +13,8 @@ import {
   // Res,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
+import { CreateCoffeesDto } from './dto/create-coffees.dto/create-coffees.dto';
+import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto';
 
 // nest generate controller 命令行创建 controller
 // 简写 nest g co, 如果不需要测试 nest g co--no - spec
@@ -53,11 +55,14 @@ export class CoffeesController {
 
   @Post()
   @HttpCode(HttpStatus.GONE) // 设置返回状态码
-  create(@Body() body) {
-    // create(@Body('name') body) {
-    // 只接收 name
-    // return body;
-    return this.coffeesService.create(body);
+
+  // create(@Body() body) {
+  //   // create(@Body('name') body) {
+  //   // 只接收 name
+  //   return body;
+  // }
+  create(@Body() createCoffeeDto: CreateCoffeesDto) {
+    return this.coffeesService.create(createCoffeeDto);
   }
 
   // 更新资源的方式有两种
@@ -69,10 +74,10 @@ export class CoffeesController {
   // }
   // 2. patch 只会替换部分资源
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
+  update(@Param('id') id: string, @Body() updateCoffeesDto: UpdateCoffeesDto) {
     // console.log('patch update', body);
     // return `This action updates #${id} coffee`;
-    return this.coffeesService.update(id, body);
+    return this.coffeesService.update(id, updateCoffeesDto);
   }
 
   @Delete(':id')

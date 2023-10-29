@@ -5,6 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Coffee } from './entities/coffee.entity';
+import { CreateCoffeesDto } from './dto/create-coffees.dto/create-coffees.dto';
+import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto';
 
 // nest generate service 命令行创建 controller
 // 简写：nest j s
@@ -33,23 +35,18 @@ export class CoffeesService {
     return coffee;
   }
 
-  create(createCoffeeDto: Coffee) {
-    if (!createCoffeeDto.hasOwnProperty('id')) {
-      createCoffeeDto.id = this.coffees.length + 1;
-    }
-    this.coffees.push(createCoffeeDto);
+  create(createCoffeeDto: CreateCoffeesDto) {
+    this.coffees.push({ id: this.coffees.length + 1, ...createCoffeeDto });
+    return createCoffeeDto;
   }
 
-  update(id: string, updateCoffeeDto: any) {
-    const existingCoffee = this.findOne(id);
+  update(id: string, updateCoffeeDto: UpdateCoffeesDto) {
+    let existingCoffee = this.findOne(id);
     if (existingCoffee) {
       // update the existing entity
-      for (const key in updateCoffeeDto) {
-        if (updateCoffeeDto.hasOwnProperty(key)) {
-          existingCoffee[key] = updateCoffeeDto[key];
-        }
-      }
+      existingCoffee = { ...existingCoffee, ...updateCoffeeDto };
     }
+    return existingCoffee;
   }
 
   remove(id: string) {
