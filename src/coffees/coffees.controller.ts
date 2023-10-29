@@ -8,8 +8,9 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   // Put,
-  Res,
+  // Res,
 } from '@nestjs/common';
 
 // nest generate controller 命令行创建 controller
@@ -17,14 +18,24 @@ import {
 
 @Controller('coffees')
 export class CoffeesController {
-  @Get()
+  // @Get()
   // @Get('test') // 也可以写成 @Get('test')，这样就会变成 /coffees/test
   // findAll() {
-  // return 'This action returns all coffees';
-  findAll(@Res() response) {
-    // 使用底层库的响应对象返回结果 nestjs 默认底层库为 express
-    // 但这种方式并不推荐，因为这样就会失去 nestjs 的优势，而且测试也会变得困难，要模拟 response 对象
-    response.status(210).send('This action returns all coffees');
+  //   return 'This action returns all coffees';
+  // }
+
+  // @Get()
+  // findAll(@Res() response) {
+  // 使用底层库的响应对象返回结果 nestjs 默认底层库为 express
+  // 但这种方式并不推荐，因为这样就会失去 nestjs 的优势，而且测试也会变得困难，要模拟 response 对象
+  // response.status(210).send('This action returns all coffees');
+  // }
+
+  @Get()
+  findAll(@Query() paginationQuery) {
+    // return `This action returns all coffees. Limit: ${paginationQuery.limit}, Offset: ${paginationQuery.offset}`;
+    const { limit, offset } = paginationQuery;
+    return `This action returns all coffees. Limit: ${limit}, Offset: ${offset}`;
   }
 
   @Get(':id')
