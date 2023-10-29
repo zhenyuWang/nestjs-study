@@ -8,16 +8,19 @@ import {
   Param,
   Patch,
   Post,
-  Query,
+  // Query,
   // Put,
   // Res,
 } from '@nestjs/common';
+import { CoffeesService } from './coffees.service';
 
 // nest generate controller 命令行创建 controller
 // 简写 nest g co, 如果不需要测试 nest g co--no - spec
 
 @Controller('coffees')
 export class CoffeesController {
+  constructor(private readonly coffeesService: CoffeesService) {}
+
   // @Get()
   // @Get('test') // 也可以写成 @Get('test')，这样就会变成 /coffees/test
   // findAll() {
@@ -32,25 +35,29 @@ export class CoffeesController {
   // }
 
   @Get()
-  findAll(@Query() paginationQuery) {
+  findAll() {
+    // findAll(@Query() paginationQuery) {
     // return `This action returns all coffees. Limit: ${paginationQuery.limit}, Offset: ${paginationQuery.offset}`;
-    const { limit, offset } = paginationQuery;
-    return `This action returns all coffees. Limit: ${limit}, Offset: ${offset}`;
+    // const { limit, offset } = paginationQuery;
+    // return `This action returns all coffees. Limit: ${limit}, Offset: ${offset}`;
+    return this.coffeesService.findAll();
   }
 
   @Get(':id')
   // fundOne(@Param() params) {
   fundOne(@Param('id') id: string) {
     // 也可以只接收部分数据，比如这里只接收 id
-    return `This action returns #${id} coffee`;
+    // return `This action returns #${id} coffee`;
+    return this.coffeesService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.GONE) // 设置返回状态码
-  // create(@Body() body) {
-  create(@Body('name') body) {
+  create(@Body() body) {
+    // create(@Body('name') body) {
     // 只接收 name
-    return body;
+    // return body;
+    return this.coffeesService.create(body);
   }
 
   // 更新资源的方式有两种
@@ -63,12 +70,14 @@ export class CoffeesController {
   // 2. patch 只会替换部分资源
   @Patch(':id')
   update(@Param('id') id: string, @Body() body) {
-    console.log('patch update', body);
-    return `This action updates #${id} coffee`;
+    // console.log('patch update', body);
+    // return `This action updates #${id} coffee`;
+    return this.coffeesService.update(id, body);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return `This action removes #${id} coffee`;
+    // return `This action removes #${id} coffee`;
+    return this.coffeesService.remove(id);
   }
 }
