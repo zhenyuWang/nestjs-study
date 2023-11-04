@@ -19,6 +19,9 @@ export class Coffee {
   @Column()
   brand: string;
 
+  @Column({ default: 0 })
+  recommendations: number;
+
   // @Column('json', { nullable: true }) // 可选
   @JoinTable()
   // cascade: true 表示级联保存, 保存coffee的时候, 会级联保存flavor
