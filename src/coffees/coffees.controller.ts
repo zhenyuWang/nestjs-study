@@ -8,13 +8,14 @@ import {
   Param,
   Patch,
   Post,
-  // Query,
+  Query,
   // Put,
   // Res,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeesDto } from './dto/create-coffees.dto/create-coffees.dto';
 import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 // nest generate controller 命令行创建 controller
 // 简写 nest g co, 如果不需要测试 nest g co--no - spec
@@ -37,17 +38,18 @@ export class CoffeesController {
   // }
 
   @Get()
-  findAll() {
-    // findAll(@Query() paginationQuery) {
+  // findAll() {
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
     // return `This action returns all coffees. Limit: ${paginationQuery.limit}, Offset: ${paginationQuery.offset}`;
     // const { limit, offset } = paginationQuery;
     // return `This action returns all coffees. Limit: ${limit}, Offset: ${offset}`;
-    return this.coffeesService.findAll();
+    // return this.coffeesService.findAll();
+    return this.coffeesService.findAll(paginationQuery);
   }
 
   @Get(':id')
   // fundOne(@Param() params) {
-  fundOne(@Param('id') id: string) {
+  fundOne(@Param('id') id: number) {
     // 也可以只接收部分数据，比如这里只接收 id
     // return `This action returns #${id} coffee`;
     return this.coffeesService.findOne(id);
@@ -74,14 +76,14 @@ export class CoffeesController {
   // }
   // 2. patch 只会替换部分资源
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoffeesDto: UpdateCoffeesDto) {
+  update(@Param('id') id: number, @Body() updateCoffeesDto: UpdateCoffeesDto) {
     // console.log('patch update', body);
     // return `This action updates #${id} coffee`;
     return this.coffeesService.update(id, updateCoffeesDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     // return `This action removes #${id} coffee`;
     return this.coffeesService.remove(id);
   }

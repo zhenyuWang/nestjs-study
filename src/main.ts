@@ -11,6 +11,9 @@ async function bootstrap() {
       // 注意：会轻微影响性能，如果确定开启，需确认性能影响是否可接受
       transform: true,
       forbidNonWhitelisted: true, // 如果有未知属性，抛出异常
+      transformOptions: {
+        enableImplicitConversion: true, // 是否进行隐式转换
+      },
     }),
   ); // 全局管道
   await app.listen(3000);
