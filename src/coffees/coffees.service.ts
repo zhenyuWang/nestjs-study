@@ -14,6 +14,9 @@ import { Connection, Repository } from 'typeorm';
 import { Flavor } from './entities/flavor.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { Event } from '../events/entities/event.entity/event.entity';
+// import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
+import coffeesConfig from './config/coffees.config';
 
 // nest generate service 命令行创建 controller
 // 简写：nest j s
@@ -21,6 +24,7 @@ import { Event } from '../events/entities/event.entity/event.entity';
 // @Injectable()
 // 默认走的是单例模式，添加了 scope 后就不是了，会为每个符合条件的请求创建一个  service 实例
 // @Injectable({ scope: Scope.TRANSIENT }) // 瞬态，下面的 console.log 会触发两次
+
 @Injectable({ scope: Scope.REQUEST }) // 限制该 service 处理请求的返回，这里只处理 request
 export class CoffeesService {
   constructor(
@@ -29,10 +33,33 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly connection: Connection,
-    @Inject('COFFEE_BRANDS') coffeeBrands: string[],
+    // @Inject('COFFEE_BRANDS') coffeeBrands: string[],
+    // private readonly configService: ConfigService, // 获取环境变量
+
+    // 通过以下方式获取配置文件中的配置及类型，提供了类型推导及检查
+    @Inject(coffeesConfig.KEY)
+    private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
   ) {
-    console.log(coffeeBrands);
+    // console.log(coffeeBrands);
     console.log('CoffeesService instantiated');
+    // const databaseHost = this.configService.get<string>(
+    //   'DATABASE_HOST',
+    //   'localhost', // 如果获取不到，就使用默认值
+    // );
+    // const databaseHost = this.configService.get<string>(
+    //   'database.host', // 配合 app.config.ts 中的配置
+    // );
+    // const databasePassword =
+    //   this.configService.get<string>('DATABASE_PASSWORD');
+    // console.log(databaseHost, databasePassword);
+
+    // 配合 config/coffeesConfig.config.ts 中的配置
+    // const coffeesConfig = this.configService.get('coffees');
+    // console.log(coffeesConfig);
+    // const coffeesConfig_foo = this.configService.get('coffees.foo');
+    // console.log(coffeesConfig_foo);
+
+    console.log('coffeesConfiguration.foo', coffeesConfiguration.foo);
   }
 
   findAll(paginationQuery: PaginationQueryDto) {

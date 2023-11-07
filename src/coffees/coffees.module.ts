@@ -7,6 +7,8 @@ import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
 import { Event } from '../events/entities/event.entity/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
+import { ConfigModule } from '@nestjs/config';
+import coffeesConfig from './config/coffees.config';
 // import { Connection } from 'typeorm';
 
 // nest g module 命令行创建 module
@@ -29,7 +31,11 @@ class ProductionConfigService {}
 // }
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
+  // imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event]), ConfigModule],
+  imports: [
+    TypeOrmModule.forFeature([Coffee, Flavor, Event]),
+    ConfigModule.forFeature(coffeesConfig),
+  ],
   controllers: [CoffeesController],
   // providers: [{ provide: CoffeesService, useValue: new MockCoffeesService() }],
   providers: [
