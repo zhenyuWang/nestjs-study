@@ -1,8 +1,10 @@
 import {
+  Inject,
   // HttpException,
   // HttpStatus,
   Injectable,
   NotFoundException,
+  Scope,
 } from '@nestjs/common';
 import { Coffee } from './entities/coffee.entity';
 import { CreateCoffeesDto } from './dto/create-coffees.dto/create-coffees.dto';
@@ -16,7 +18,10 @@ import { Event } from '../events/entities/event.entity/event.entity';
 // nest generate service 命令行创建 controller
 // 简写：nest j s
 
-@Injectable()
+// @Injectable()
+// 默认走的是单例模式，添加了 scope 后就不是了，会为每个符合条件的请求创建一个  service 实例
+// @Injectable({ scope: Scope.TRANSIENT }) // 瞬态，下面的 console.log 会触发两次
+@Injectable({ scope: Scope.REQUEST }) // 限制该 service 处理请求的返回，这里只处理 request
 export class CoffeesService {
   constructor(
     @InjectRepository(Coffee)
@@ -24,7 +29,11 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly connection: Connection,
-  ) {}
+    @Inject('COFFEE_BRANDS') coffeeBrands: string[],
+  ) {
+    console.log(coffeeBrands);
+    console.log('CoffeesService instantiated');
+  }
 
   findAll(paginationQuery: PaginationQueryDto) {
     // return this.coffeeRepository.find();

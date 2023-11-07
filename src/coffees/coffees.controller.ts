@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   Patch,
   Post,
@@ -16,13 +17,21 @@ import { CoffeesService } from './coffees.service';
 import { CreateCoffeesDto } from './dto/create-coffees.dto/create-coffees.dto';
 import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
+import { REQUEST } from '@nestjs/core';
 
 // nest generate controller 命令行创建 controller
 // 简写 nest g co, 如果不需要测试 nest g co--no - spec
 
 @Controller('coffees')
 export class CoffeesController {
-  constructor(private readonly coffeesService: CoffeesService) {}
+  constructor(
+    private readonly coffeesService: CoffeesService,
+    @Inject(REQUEST) private readonly request: Request,
+  ) {
+    // 因为 controller 和 service 是相关联的，所以 service 添加了 Scope, 这里也会变成多实例模式
+    // constructor 也可以接受 inject request 了
+    console.log('CoffeesController created!');
+  }
 
   // @Get()
   // @Get('test') // 也可以写成 @Get('test')，这样就会变成 /coffees/test

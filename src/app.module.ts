@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 // import { CoffeesService } from './coffees/coffees.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true, // NEVER USE IN PRODUCTION
     }),
+    CoffeeRatingModule,
+    DatabaseModule,
   ],
   // controllers: [AppController, CoffeesController],
   controllers: [AppController],
