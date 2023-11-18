@@ -18,6 +18,7 @@ import { CreateCoffeesDto } from './dto/create-coffees.dto/create-coffees.dto';
 import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { REQUEST } from '@nestjs/core';
+import { Public } from 'src/common/decorators/public.decorator';
 
 // nest generate controller 命令行创建 controller
 // 简写 nest g co, 如果不需要测试 nest g co--no - spec
@@ -45,7 +46,7 @@ export class CoffeesController {
   // 但这种方式并不推荐，因为这样就会失去 nestjs 的优势，而且测试也会变得困难，要模拟 response 对象
   // response.status(210).send('This action returns all coffees');
   // }
-
+  @Public() // 自定义元数据
   @Get()
   // findAll() {
   findAll(@Query() paginationQuery: PaginationQueryDto) {
