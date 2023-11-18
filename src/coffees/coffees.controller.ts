@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Inject,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -58,11 +59,13 @@ export class CoffeesController {
     return this.coffeesService.findAll(paginationQuery);
   }
 
+  @Public()
   @Get(':id')
-  // fundOne(@Param() params) {
-  fundOne(@Param('id') id: number) {
+  // findOne(@Param() params) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     // 也可以只接收部分数据，比如这里只接收 id
     // return `This action returns #${id} coffee`;
+    console.log('id', id, typeof id);
     return this.coffeesService.findOne(id);
   }
 
