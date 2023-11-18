@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
+import { ApiKeyGuard } from './common/guards/api-key/api-key.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +19,7 @@ async function bootstrap() {
     }),
   ); // 全局管道
   app.useGlobalFilters(new HttpExceptionFilter()); // 全局过滤器
+  app.useGlobalGuards(new ApiKeyGuard()); // 全局守卫
   await app.listen(3000);
 }
 bootstrap();
