@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
 import { WrapResponseInterceptor } from './common/interceptors/wrap-response/wrap-response.interceptor';
+import { TimeoutInterceptor } from './common/interceptors/timeout/timeout.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +20,10 @@ async function bootstrap() {
     }),
   ); // 全局管道
   app.useGlobalFilters(new HttpExceptionFilter()); // 全局过滤器
-  app.useGlobalInterceptors(new WrapResponseInterceptor()); // 全局拦截器
+  app.useGlobalInterceptors(
+    new WrapResponseInterceptor(),
+    new TimeoutInterceptor(),
+  ); // 全局拦截器
   await app.listen(3000);
 }
 bootstrap();

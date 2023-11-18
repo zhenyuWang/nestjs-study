@@ -49,11 +49,12 @@ export class CoffeesController {
   @Public() // 自定义元数据
   @Get()
   // findAll() {
-  findAll(@Query() paginationQuery: PaginationQueryDto) {
+  async findAll(@Query() paginationQuery: PaginationQueryDto) {
     // return `This action returns all coffees. Limit: ${paginationQuery.limit}, Offset: ${paginationQuery.offset}`;
     // const { limit, offset } = paginationQuery;
     // return `This action returns all coffees. Limit: ${limit}, Offset: ${offset}`;
     // return this.coffeesService.findAll();
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return this.coffeesService.findAll(paginationQuery);
   }
 
