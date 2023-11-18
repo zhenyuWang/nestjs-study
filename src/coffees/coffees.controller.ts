@@ -20,6 +20,7 @@ import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto'
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { REQUEST } from '@nestjs/core';
 import { Public } from 'src/common/decorators/public.decorator';
+import { Protocol } from 'src/common/decorators/protocol.decorator';
 
 // nest generate controller 命令行创建 controller
 // 简写 nest g co, 如果不需要测试 nest g co--no - spec
@@ -50,12 +51,16 @@ export class CoffeesController {
   @Public() // 自定义元数据
   @Get()
   // findAll() {
-  async findAll(@Query() paginationQuery: PaginationQueryDto) {
+  async findAll(
+    @Protocol('https') protocol: string,
+    @Query() paginationQuery: PaginationQueryDto,
+  ) {
     // return `This action returns all coffees. Limit: ${paginationQuery.limit}, Offset: ${paginationQuery.offset}`;
     // const { limit, offset } = paginationQuery;
     // return `This action returns all coffees. Limit: ${limit}, Offset: ${offset}`;
     // return this.coffeesService.findAll();
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log('protocol', protocol);
     return this.coffeesService.findAll(paginationQuery);
   }
 
