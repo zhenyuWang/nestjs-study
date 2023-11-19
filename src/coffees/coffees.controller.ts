@@ -21,10 +21,13 @@ import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/paginati
 import { REQUEST } from '@nestjs/core';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Protocol } from 'src/common/decorators/protocol.decorator';
+// import { ApiResponse } from '@nestjs/swagger';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
 // nest generate controller 命令行创建 controller
 // 简写 nest g co, 如果不需要测试 nest g co--no - spec
 
+@ApiTags('coffees') // 通过添加标签，将一组 api 进行分组
 @Controller('coffees')
 export class CoffeesController {
   constructor(
@@ -48,6 +51,9 @@ export class CoffeesController {
   // 但这种方式并不推荐，因为这样就会失去 nestjs 的优势，而且测试也会变得困难，要模拟 response 对象
   // response.status(210).send('This action returns all coffees');
   // }
+  // 利用装饰器为文档补充响应信息
+  // @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' }) // 等同于上面的写法
   @Public() // 自定义元数据
   @Get()
   // findAll() {

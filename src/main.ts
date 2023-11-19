@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
 import { WrapResponseInterceptor } from './common/interceptors/wrap-response/wrap-response.interceptor';
 import { TimeoutInterceptor } from './common/interceptors/timeout/timeout.interceptor';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,6 +25,14 @@ async function bootstrap() {
     new WrapResponseInterceptor(),
     new TimeoutInterceptor(),
   ); // 全局拦截器
+
+  const options = new DocumentBuilder()
+    .setTitle('NestJS API')
+    .setDescription('The NestJS API description')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, options); // 生成文档对象
+  SwaggerModule.setup('api-docs', app, document); // 文档路径
   await app.listen(3000);
 }
 bootstrap();
