@@ -12,7 +12,7 @@ import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 import { Flavor } from './entities/flavor.entity';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto/pagination-query.dto';
 import { Event } from '../events/entities/event.entity/event.entity';
 // import { ConfigService, ConfigType } from '@nestjs/config';
 import { ConfigType } from '@nestjs/config';

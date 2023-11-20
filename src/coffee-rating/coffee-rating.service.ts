@@ -1,7 +1,7 @@
 // nest g s coffee-rating
 
 import { Injectable } from '@nestjs/common';
-import { CoffeesService } from 'src/coffees/coffees.service';
+import { CoffeesService } from '../coffees/coffees.service';
 
 @Injectable()
 export class CoffeeRatingService {

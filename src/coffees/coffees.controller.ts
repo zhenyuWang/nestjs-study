@@ -3,8 +3,8 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
+  // HttpCode,
+  // HttpStatus,
   Inject,
   Param,
   ParseIntPipe,
@@ -17,10 +17,10 @@ import {
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeesDto } from './dto/create-coffees.dto/create-coffees.dto';
 import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto/pagination-query.dto';
 import { REQUEST } from '@nestjs/core';
-import { Public } from 'src/common/decorators/public.decorator';
-import { Protocol } from 'src/common/decorators/protocol.decorator';
+import { Public } from '../common/decorators/public.decorator';
+import { Protocol } from '../common/decorators/protocol.decorator';
 // import { ApiResponse } from '@nestjs/swagger';
 import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
@@ -80,14 +80,13 @@ export class CoffeesController {
     return this.coffeesService.findOne(id);
   }
 
-  @Post()
-  @HttpCode(HttpStatus.GONE) // 设置返回状态码
-
+  // @HttpCode(HttpStatus.GONE) // 设置返回状态码
   // create(@Body() body) {
   //   // create(@Body('name') body) {
   //   // 只接收 name
   //   return body;
   // }
+  @Post()
   create(@Body() createCoffeeDto: CreateCoffeesDto) {
     return this.coffeesService.create(createCoffeeDto);
   }
@@ -107,6 +106,7 @@ export class CoffeesController {
     return this.coffeesService.update(id, updateCoffeesDto);
   }
 
+  @Public()
   @Delete(':id')
   remove(@Param('id') id: number) {
     // return `This action removes #${id} coffee`;
