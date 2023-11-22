@@ -3,11 +3,12 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
+  // HttpCode,
+  // HttpStatus,
   Param,
   Patch,
   Post,
+  Query,
   // Query,
   // Put,
   // Res,
@@ -15,6 +16,7 @@ import {
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeesDto } from './dto/create-coffees.dto/create-coffees.dto';
 import { UpdateCoffeesDto } from './dto/update--coffees.dto/update--coffees.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 
 // nest generate controller 命令行创建 controller
 // 简写 nest g co, 如果不需要测试 nest g co--no - spec
@@ -37,12 +39,12 @@ export class CoffeesController {
   // }
 
   @Get()
-  findAll() {
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
     // findAll(@Query() paginationQuery) {
     // return `This action returns all coffees. Limit: ${paginationQuery.limit}, Offset: ${paginationQuery.offset}`;
     // const { limit, offset } = paginationQuery;
     // return `This action returns all coffees. Limit: ${limit}, Offset: ${offset}`;
-    return this.coffeesService.findAll();
+    return this.coffeesService.findAll(paginationQuery);
   }
 
   @Get(':id')
@@ -53,14 +55,14 @@ export class CoffeesController {
     return this.coffeesService.findOne(id);
   }
 
-  @Post()
-  @HttpCode(HttpStatus.GONE) // 设置返回状态码
+  // @HttpCode(HttpStatus.GONE) // 设置返回状态码
 
   // create(@Body() body) {
   //   // create(@Body('name') body) {
   //   // 只接收 name
   //   return body;
   // }
+  @Post()
   create(@Body() createCoffeeDto: CreateCoffeesDto) {
     return this.coffeesService.create(createCoffeeDto);
   }
